@@ -17,9 +17,41 @@ export class AppComponent {
   currentDayNumber: string = '';
   currentMonth: string = '';
   currentYear: string = '';
+  currentBackgroundClass: string = '';
 
   constructor() {
     this.loadCurrentMonthAndDayData();
+    this.updateBackgroundClass();
+  }
+
+  private updateBackgroundClass() {
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert to minutes
+
+    if (this.currentDayTimestamps.length >= 6) {
+      const fajrTime = this.convertTimeToMinutes(this.currentDayTimestamps[0]);
+      const sunriseTime = this.convertTimeToMinutes(this.currentDayTimestamps[1]);
+      const asrTime = this.convertTimeToMinutes(this.currentDayTimestamps[3]);
+      const maghribTime = this.convertTimeToMinutes(this.currentDayTimestamps[4]);
+      const ishaTime = this.convertTimeToMinutes(this.currentDayTimestamps[5]);
+
+      if (currentTime >= fajrTime && currentTime < sunriseTime) {
+        this.currentBackgroundClass = 'morning-bg';
+      } else if (currentTime >= sunriseTime && currentTime < asrTime) {
+        this.currentBackgroundClass = 'day-bg';
+      } else if (currentTime >= asrTime && currentTime < maghribTime) {
+        this.currentBackgroundClass = 'evening-bg';
+      } else if (currentTime >= maghribTime && currentTime < ishaTime) {
+        this.currentBackgroundClass = 'night-bg';
+      } else {
+        this.currentBackgroundClass = 'night-bg';
+      }
+    }
+  }
+
+  private convertTimeToMinutes(timeStr: string): number {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
   }
 
   loadCurrentMonthAndDayData() {
@@ -43,6 +75,7 @@ export class AppComponent {
       const dayData = this.currentMonthData.days.find((day: any) => day.day === this.currentDayNumber);
       if (dayData) {
         this.currentDayTimestamps = dayData.timestamps;
+        this.updateBackgroundClass();
       }
     }
   }
