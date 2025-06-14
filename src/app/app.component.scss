@@ -172,8 +172,14 @@ main {
 // Table styles
 .table-container {
   min-height: 100vh;
-  background: url("/assets/Gertma2.png") no-repeat top center fixed;
+  background: url("/assets/Gertma2.png") no-repeat center center fixed;
   background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .table-wrapper {
@@ -409,6 +415,12 @@ main {
   .table-container {
     background: url("/assets/Gertma1.png") no-repeat center center fixed;
     background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
 }
 
