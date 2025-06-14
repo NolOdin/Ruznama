@@ -423,31 +423,31 @@ main {
 @media screen and (max-width: 767px) {
   .table-container {
     &::before {
-      background: url("/assets/Gertma1.png") no-repeat center center;
+      background: url("/assets/Gertma1-T.png") no-repeat center center;
       background-size: cover;
       -webkit-background-size: cover;
     }
 
     &.morning-bg::before {
-      background: url("/assets/Gertma1.png") no-repeat center center;
+      background: url("/assets/Gertma1-T.png") no-repeat center center;
       background-size: cover;
       -webkit-background-size: cover;
     }
 
     &.day-bg::before {
-      background: url("/assets/Gertma1.png") no-repeat center center;
+      background: url("/assets/Gertma1-T.png") no-repeat center center;
       background-size: cover;
       -webkit-background-size: cover;
     }
 
     &.evening-bg::before {
-      background: url("/assets/Gertma1_evening.png") no-repeat center center;
+      background: url("/assets/Gertma1_evening-T.png") no-repeat center center;
       background-size: cover;
       -webkit-background-size: cover;
     }
 
     &.night-bg::before {
-      background: url("/assets/Gertma1_night.png") no-repeat center center;
+      background: url("/assets/Gertma1_night-T.png") no-repeat center center;
       background-size: cover;
       -webkit-background-size: cover;
     }
