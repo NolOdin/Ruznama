@@ -27,7 +27,7 @@ export class AppComponent {
   private updateBackgroundClass() {
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert to minutes
-
+    
     if (this.currentDayTimestamps.length >= 6) {
       const fajrTime = this.convertTimeToMinutes(this.currentDayTimestamps[0]);
       const sunriseTime = this.convertTimeToMinutes(this.currentDayTimestamps[1]);
@@ -43,8 +43,10 @@ export class AppComponent {
         this.currentBackgroundClass = 'evening-bg';
       } else if (currentTime >= maghribTime && currentTime < ishaTime) {
         this.currentBackgroundClass = 'night-bg';
-      } else {
+      } else if (currentTime >= ishaTime || currentTime < fajrTime) {
         this.currentBackgroundClass = 'night-bg';
+      } else {
+        this.currentBackgroundClass = 'day-bg';
       }
     }
   }
