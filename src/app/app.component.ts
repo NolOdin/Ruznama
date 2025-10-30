@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as ruznamaData from '../datas/ruznama_datas.json';
+import { DesktopTableComponent } from "./desktop-table/desktop-table.component";
+import { MobileTableComponent } from "./mobile-table/mobile-table.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

@@ -1,0 +1,57 @@
+<div class="table-content">
+    <div class="intro-header-card">
+      <h1>Рузнама с.Гертма</h1>
+    </div>
+    <div class="actual-table-container">
+      <h3 class="date-header">
+        <span class="today-text">Сегодня:</span>
+        <span class="current-day-number-text">{{ currentDayNumber }}</span>
+        <span class="month-year-text">{{ currentMonth }} {{ currentYear }}</span>
+      </h3>
+      <div class="table-scroll">
+        <table class="actual-table-desc">
+            <thead>
+              <tr>
+                @for (header of ['Дата', 'Фаджр', 'Восход', 'Обеденный', 'Послеобеденный', 'Вечерний', 'Ночной']; track header) {
+                  <th>{{ header }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>{{ currentDayNumber }}</td>
+                  @for (time of currentDayTimestamps; track $index) {
+                    <td>{{ time }}</td>
+                  }
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            @for (header of ['Дата', 'Фаджр', 'Восход', 'Обеденный', 'Послеобеденный', 'Вечерний', 'Ночной']; track header) {
+              <th>{{ header }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @if (currentMonthData) {
+            @for (day of currentMonthData.days; track day.day) {
+                <tr>
+                  <td>{{ day.day }}</td>
+                  @for (time of day.timestamps; track $index) {
+                    <td>{{ time }}</td>
+                  }
+                </tr>
+            }
+          } @else {
+            <tr><td colspan="7">No data available for current month.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+</div>
+

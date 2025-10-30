@@ -1,0 +1,98 @@
+<div class="table-content">
+    <div class="intro-header-card-mobile">
+      <h1>Рузнама с.Гертма</h1>
+    </div>
+    <div class="actual-table-container">
+      <h3 class="date-header">
+        <span class="today-text">Сегодня:</span>
+        <span class="current-day-number-text">{{ currentDayNumber }} {{ currentMonth }}</span>
+        <span class="month-year-text">{{ currentYear }} г.</span>
+      </h3>
+      <div class="table-scroll">
+        <table class="actual-table">
+          <thead>
+            <tr>
+              <th>Время</th>
+              <th>Значение</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Фаджр</td>
+              <td>{{ currentDayTimestamps[0] }}</td>
+            </tr>
+            <tr>
+              <td>Восход</td>
+              <td>{{ currentDayTimestamps[1] }}</td>
+            </tr>
+            <tr>
+              <td>Обеденный</td>
+              <td>{{ currentDayTimestamps[2] }}</td>
+            </tr>
+            <tr>
+              <td>Послеобеденный</td>
+              <td>{{ currentDayTimestamps[3] }}</td>
+            </tr>
+            <tr>
+              <td>Вечерний</td>
+              <td>{{ currentDayTimestamps[4] }} +3 мин.</td>
+            </tr>
+            <tr>
+              <td>Ночной</td>
+              <td>{{ currentDayTimestamps[5] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mobile-table-cards">
+      <h3 class="date-header" style="color: #FFFF; font-size: 25px;">Оставшиеся дни:</h3>
+      @if (currentMonthData) {
+        @for (day of currentMonthData.days; track day.day) {
+          @if (day.day > currentDayNumber) {
+            <div class="mobile-day-card">
+              <h4 class="date-header">{{ day.day }} число</h4>
+              <div class="table-scroll">
+                <table class="mobile-table">
+                  <thead>
+                    <tr>
+                      <th>Время</th>
+                      <th>Значение</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Фаджр</td>
+                      <td>{{ day.timestamps[0] }}</td>
+                    </tr>
+                    <tr>
+                      <td>Восход</td>
+                      <td>{{ day.timestamps[1] }}</td>
+                    </tr>
+                    <tr>
+                      <td>Обеденный</td>
+                      <td>{{ day.timestamps[2] }}</td>
+                    </tr>
+                    <tr>
+                      <td>Послеобеденный</td>
+                      <td>{{ day.timestamps[3] }}</td>
+                    </tr>
+                    <tr>
+                      <td>Вечерний</td>
+                      <td>{{ day.timestamps[4] }}</td>
+                    </tr>
+                    <tr>
+                      <td>Ночной</td>
+                      <td>{{ day.timestamps[5] }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        }
+      } @else {
+        <div>Нет данных за текущий месяц.</div>
+      }
+    </div>
+  </div>
