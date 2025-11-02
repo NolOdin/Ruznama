@@ -1,0 +1,25 @@
+<div class="prayer-time-widget">
+  <div class="date-info">
+    <span class="day">{{ displayDayNumber || currentDayNumber }}</span>
+    <div class="month-year">
+      <span class="month">{{ displayMonth || currentMonth }}</span>
+      <span class="year">{{ displayYear || currentYear }}</span>
+    </div>
+  </div>
+  
+  @if ((timestamps.length > 0) || (currentDayTimestamps && currentDayTimestamps.length > 0)) {
+    <div class="prayer-times">
+      @for (time of (timestamps.length > 0 ? timestamps : currentDayTimestamps); track $index) {
+        <div class="prayer-item">
+          <span class="prayer-name">{{ getPrayerName($index) }}</span>
+          <span class="prayer-time">{{ time }}</span>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="no-data">
+      <p>Данные загружаются...</p>
+    </div>
+  }
+</div>
+
