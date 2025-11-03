@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WidgetService, WidgetHelpers, WidgetType } from '../widgets';
+import { AndroidWidgetService } from '../services/android-widget.service';
 
 @Component({
   selector: 'app-mobile-table',
@@ -8,35 +8,96 @@ import { WidgetService, WidgetHelpers, WidgetType } from '../widgets';
   templateUrl: './mobile-table.component.html',
   styleUrl: './mobile-table.component.scss'
 })
-export class MobileTableComponent {
+export class MobileTableComponent implements OnInit {
   @Input() currentMonthData: any;
   @Input() currentDayTimestamps: string[] = [];
   @Input() currentDayNumber: string = '';
   @Input() currentMonth: string = '';
   @Input() currentYear: string = '';
 
-  constructor(private widgetService: WidgetService) {}
+  isWidgetSupported: boolean = false;
+  isPWAInstalled: boolean = false;
+  private deferredPrompt: any = null;
+
+  constructor(private androidWidgetService: AndroidWidgetService) {}
+
+  ngOnInit(): void {
+    this.isWidgetSupported = this.androidWidgetService.isSupported();
+    this.isPWAInstalled = this.androidWidgetService.isInstalled();
+    
+    // Перехватываем событие установки PWA
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+    });
+  }
 
   /**
-   * Добавить виджет времени молитв
+   * Добавить системный виджет времени молитв для Android
    */
-  addPrayerTimeWidget(): void {
-    const widget = WidgetHelpers.createPrayerTimeWidget(
-      WidgetHelpers.generateWidgetId('prayer-time'),
-      {
-        title: 'Время молитв',
-        autoRefresh: true,
-        showDate: true,
-        size: {
-          width: 350,
-          height: 'auto'
-        }
+  async addWidget(): Promise<void> {
+    if (!this.isWidgetSupported) {
+      alert('Системные виджеты поддерживаются только на Android устройствах с установленным PWA.');
+      return;
+    }
+
+    if (!this.isPWAInstalled) {
+      const install = confirm(
+        'Для использования системных виджетов приложение должно быть установлено как PWA.\n\n' +
+        'Хотите установить приложение сейчас?'
+      );
+      
+      if (install) {
+        await this.installPWA();
       }
-    );
-    this.widgetService.addWidget(widget);
-    
-    // Показываем уведомление об успешном добавлении
-    alert('Виджет времени молитв добавлен!');
+      return;
+    }
+
+    try {
+      const success = await this.androidWidgetService.addPrayerTimeWidget({
+        dayNumber: this.currentDayNumber,
+        month: this.currentMonth,
+        year: this.currentYear,
+        timestamps: this.currentDayTimestamps
+      });
+      
+      if (success) {
+        alert('Виджет успешно добавлен! Проверьте главный экран устройства - виджет должен быть доступен в списке виджетов.');
+      } else {
+        alert('Не удалось добавить виджет. Попробуйте обновить страницу.');
+      }
+    } catch (error) {
+      console.error('Ошибка при добавлении виджета:', error);
+      alert('Произошла ошибка при добавлении виджета.');
+    }
+  }
+
+  /**
+   * Установить PWA
+   */
+  private async installPWA(): Promise<void> {
+    if (this.deferredPrompt) {
+      try {
+        this.deferredPrompt.prompt();
+        const { outcome } = await this.deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+          alert('Приложение установлено! Обновите страницу и попробуйте добавить виджет снова.');
+          this.deferredPrompt = null;
+          setTimeout(() => {
+            this.isPWAInstalled = this.androidWidgetService.isInstalled();
+          }, 1000);
+        }
+      } catch (error) {
+        console.error('Ошибка при установке PWA:', error);
+        alert('Не удалось установить приложение автоматически.');
+      }
+    } else {
+      alert('Инструкции по установке:\n\n' +
+            'Chrome: Меню (⋮) → "Установить приложение"\n' +
+            'Samsung Internet: Меню → "Добавить на главный экран"\n\n' +
+            'После установки обновите страницу.');
+    }
   }
 
   /**
