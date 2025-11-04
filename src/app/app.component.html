@@ -1,5 +1,28 @@
 <div class="table-container" [ngClass]="currentBackgroundClass">
   <div class="table-wrapper">
+    <!-- Mobile-only top bar and hamburger without Tailwind -->
+    <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">
+      <div class="mobile-location">Локация: {{ currentCity }}</div>
+      <button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen" aria-label="Открыть меню">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu panel + backdrop -->
+    <div *ngIf="menuOpen" class="mobile-menu-root">
+      <div class="mobile-menu-backdrop" (click)="menuOpen = false"></div>
+      <div class="mobile-menu-panel">
+        <div class="mobile-menu-label">Город</div>
+        <button class="mobile-menu-item" (click)="currentCity = 'Гертма'; menuOpen = false;">
+          <span>Гертма</span>
+          <span class="choice-pill">выбор</span>
+        </button>
+      </div>
+    </div>
     
     <!-- Desktop table -->
     <app-desktop-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" ></app-desktop-table>
