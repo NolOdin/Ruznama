@@ -4,11 +4,11 @@
     <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">
       <div class="mobile-location">Локация: {{ currentCity }}</div>
       <button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen" aria-label="Открыть меню">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
-        </svg>
+        <span class="hamburger-icon" aria-hidden="true">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </span>
       </button>
     </div>
 
