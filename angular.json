@@ -37,7 +37,7 @@
                 "output": "."
               },
               {
-                "glob": "ruznama_datas.json",
+                "glob": "**/*",
                 "input": "src/datas",
                 "output": "/datas/"
               }

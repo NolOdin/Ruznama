@@ -1,5 +1,28 @@
 <div class="table-container" [ngClass]="currentBackgroundClass">
   <div class="table-wrapper">
+    <!-- Mobile-only top bar and hamburger without Tailwind -->
+    <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">
+      <div class="mobile-location">Локация: {{ currentCity }}</div>
+      <button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen" aria-label="Открыть меню">
+        <span class="hamburger-icon" aria-hidden="true">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Mobile menu panel + backdrop -->
+    <div *ngIf="menuOpen" class="mobile-menu-root">
+      <div class="mobile-menu-backdrop" (click)="menuOpen = false"></div>
+      <div class="mobile-menu-panel">
+        <div class="mobile-menu-label">Город</div>
+        <button class="mobile-menu-item" (click)="currentCity = 'Гертма'; menuOpen = false;">
+          <span>Гертма</span>
+          <span class="choice-pill">выбор</span>
+        </button>
+      </div>
+    </div>
     
     <!-- Desktop table -->
     <app-desktop-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" ></app-desktop-table>

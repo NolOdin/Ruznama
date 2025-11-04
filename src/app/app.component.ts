@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import * as ruznamaData from '../datas/ruznama_datas.json';
+import * as gertmaData from '../datas/getrma_datas.json';
 import { DesktopTableComponent } from "./desktop-table/desktop-table.component";
 import { MobileTableComponent } from "./mobile-table/mobile-table.component";
 
@@ -20,10 +20,23 @@ export class AppComponent {
   currentMonth: string = '';
   currentYear: string = '';
   currentBackgroundClass: string = '';
+  currentCity: string = 'Гертма';
+  menuOpen = false;
+  mobileTopbarOpacity = 0.9;
+
 
   constructor() {
     this.loadCurrentMonthAndDayData();
     this.updateBackgroundClass();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    const y = window.scrollY || 0;
+    const fadeEnd = 150; // px to fully fade out
+    const clamped = Math.max(0, Math.min(1, (fadeEnd - y) / fadeEnd));
+    const base = 0.9; // slightly transparent at top
+    this.mobileTopbarOpacity = base * clamped;
   }
 
   private updateBackgroundClass() {
@@ -72,7 +85,7 @@ export class AppComponent {
 
     const currentMonthPadded = (currentMonthNum + 1).toString().padStart(2, '0');
 
-    const yearData = (ruznamaData as any).default.year;
+    const yearData = (gertmaData as any).default.year;
     this.currentMonthData = yearData.find((month: any) => month.mouth === currentMonthPadded);
 
     if (this.currentMonthData) {

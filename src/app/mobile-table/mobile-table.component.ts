@@ -13,6 +13,7 @@ export class MobileTableComponent implements OnInit {
   @Input() currentDayNumber: string = '';
   @Input() currentMonth: string = '';
   @Input() currentYear: string = '';
+  
 
 
 
