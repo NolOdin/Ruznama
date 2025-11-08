@@ -12,4 +12,5 @@ export class DesktopTableComponent {
   @Input() currentDayNumber: string = '';
   @Input() currentMonth: string = '';
   @Input() currentYear: string = '';
+  @Input() currentCity: string = 'Гертма';
 }

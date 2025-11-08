@@ -1,6 +1,6 @@
 <div class="table-content">
     <div class="intro-header-card-mobile">
-      <h1>Рузнама с.Гертма</h1>
+      <h1>Рузнама {{ currentCity === 'Гертма' ? 'с.' : 'г.' }}{{ currentCity }}</h1>
     </div>
     <!-- Кнопки действий для мобильных устройств -->
     <div class="mobile-action-buttons">
@@ -50,7 +50,7 @@
             </tr>
             <tr>
               <td>Вечерний</td>
-              <td>{{ currentDayTimestamps[4] }} +3 мин.</td>
+              <td>{{ currentDayTimestamps[4] }}{{ currentCity === 'Гертма' ? ' +3 мин.' : '' }}</td>
             </tr>
             <tr>
               <td>Ночной</td>
@@ -61,8 +61,13 @@
       </div>
     </div>
     <div class="mobile-table-cards">
-      <h3 class="date-header" style="color: #FFFF; font-size: 25px;">Оставшиеся дни:</h3>
-      @if (currentMonthData) {
+      <button class="remaining-days-toggle" (click)="toggleRemainingDays()" [class.open]="showRemainingDays" aria-label="Показать/скрыть оставшиеся дни">
+        <span class="remaining-days-text">Оставшиеся дни:</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+      @if (showRemainingDays && currentMonthData) {
         @for (day of currentMonthData.days; track day.day) {
           @if (day.day > currentDayNumber) {
             <div class="mobile-day-card">
@@ -107,7 +112,7 @@
           }
         }
       } @else {
-        <div>Нет данных за текущий месяц.</div>
+        <!-- <div>Нет данных за текущий месяц.</div> -->
       }
     </div>
   </div>

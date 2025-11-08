@@ -1,8 +1,14 @@
-<div class="table-container" [ngClass]="currentBackgroundClass">
+<div class="table-container" [ngClass]="currentBackgroundClass" [ngStyle]="{'--bg-image': getBackgroundImage()}">
   <div class="table-wrapper">
     <!-- Mobile-only top bar and hamburger without Tailwind -->
     <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">
-      <div class="mobile-location">Локация: {{ currentCity }}</div>
+      <div class="mobile-location">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span>{{ currentCity }}</span>
+      </div>
       <button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen" aria-label="Открыть меню">
         <span class="hamburger-icon" aria-hidden="true">
           <span class="bar"></span>
@@ -17,16 +23,20 @@
       <div class="mobile-menu-backdrop" (click)="menuOpen = false"></div>
       <div class="mobile-menu-panel">
         <div class="mobile-menu-label">Город</div>
-        <button class="mobile-menu-item" (click)="currentCity = 'Гертма'; menuOpen = false;">
+        <button class="mobile-menu-item" (click)="selectCity('Гертма')" [class.active]="currentCity === 'Гертма'">
           <span>Гертма</span>
-          <span class="choice-pill">выбор</span>
+          <span class="choice-pill" *ngIf="currentCity === 'Гертма'"></span>
+        </button>
+        <button class="mobile-menu-item" (click)="selectCity('Махачкала')" [class.active]="currentCity === 'Махачкала'">
+          <span>Махачкала</span>
+          <span class="choice-pill" *ngIf="currentCity === 'Махачкала'"></span>
         </button>
       </div>
     </div>
     
     <!-- Desktop table -->
-    <app-desktop-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" ></app-desktop-table>
+    <app-desktop-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" [currentCity]="currentCity"></app-desktop-table>
     <!-- Mobile tables -->
-    <app-mobile-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" ></app-mobile-table>
+    <app-mobile-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps" [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData" [currentCity]="currentCity"></app-mobile-table>
 
 <router-outlet />
