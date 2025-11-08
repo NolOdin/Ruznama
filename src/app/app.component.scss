@@ -163,6 +163,18 @@
     backdrop-filter: blur(10px) saturate(180%);
     -webkit-backdrop-filter: blur(10px) saturate(180%);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .mobile-location svg {
+    flex-shrink: 0;
+    color: #111827;
+  }
+  
+  .mobile-location span {
+    color: #111827;
   }
 
   .hamburger-btn {
