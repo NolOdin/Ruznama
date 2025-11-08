@@ -205,7 +205,7 @@
   th, td {
     padding: 0.75rem 1rem;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    //border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   }
 
   th {
@@ -220,8 +220,16 @@
     color: #333;
   }
 
-  tr:last-child td {
+  tbody tr {
+    //border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  tbody tr:last-child {
     border-bottom: none;
+    
+    td {
+      border-bottom: none;
+    }
   }
 }
 
