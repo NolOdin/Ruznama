@@ -1,7 +1,8 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as gertmaData from '../datas/getrma_datas.json';
+import * as mkhData from '../datas/mkh_datas.json';
 import { DesktopTableComponent } from "./desktop-table/desktop-table.component";
 import { MobileTableComponent } from "./mobile-table/mobile-table.component";
 
@@ -21,11 +22,17 @@ export class AppComponent {
   currentYear: string = '';
   currentBackgroundClass: string = '';
   currentCity: string = 'Гертма';
+  cities: string[] = ['Гертма', 'Махачкала'];
   menuOpen = false;
   mobileTopbarOpacity = 0.9;
+  private readonly CITY_STORAGE_KEY = 'ruznama_selected_city';
 
-
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
+    // Восстанавливаем сохраненный город из localStorage
+    const savedCity = localStorage.getItem(this.CITY_STORAGE_KEY);
+    if (savedCity && this.cities.includes(savedCity)) {
+      this.currentCity = savedCity;
+    }
     this.loadCurrentMonthAndDayData();
     this.updateBackgroundClass();
   }
@@ -71,7 +78,10 @@ export class AppComponent {
     return hours * 60 + minutes;
   }
 
-  loadCurrentMonthAndDayData() {
+  loadCurrentMonthAndDayData(city?: string) {
+    const selectedCity = city || this.currentCity;
+    this.currentCity = selectedCity;
+
     const today = new Date();
     const currentMonthNum = today.getMonth();
     this.currentDayNumber = today.getDate().toString().padStart(2, '0');
@@ -85,15 +95,50 @@ export class AppComponent {
 
     const currentMonthPadded = (currentMonthNum + 1).toString().padStart(2, '0');
 
-    const yearData = (gertmaData as any).default.year;
-    this.currentMonthData = yearData.find((month: any) => month.mouth === currentMonthPadded);
+    let yearData: any[] = [];
+    let data: any = null;
+    
+    if (selectedCity === 'Гертма') {
+      //console.log('s sity Gertma')
+      // Access JSON data - Angular wraps it in default property
+      data = (gertmaData as any).default || gertmaData;
+      yearData = data.year || [];
+      this.currentMonthData = yearData.find((month: any) => month.mouth === currentMonthPadded);
+    } else if (selectedCity === 'Махачкала') {
+      // Access JSON data - Angular wraps it in default property
+      data = (mkhData as any).default || mkhData;
+      yearData = data.year || [];
+      this.currentMonthData = yearData.find((month: any) => month.month === currentMonthPadded);
+      
+    }
 
+    
     if (this.currentMonthData) {
+      // Force new object reference to trigger change detection
+      this.currentMonthData = { 
+        ...this.currentMonthData, 
+        days: [...this.currentMonthData.days] 
+      };
+      
       const dayData = this.currentMonthData.days.find((day: any) => day.day === this.currentDayNumber);
       if (dayData) {
-        this.currentDayTimestamps = dayData.timestamps;
+        this.currentDayTimestamps = [...dayData.timestamps]; // Create new array to trigger change detection
         this.updateBackgroundClass();
+      } else {
+        console.warn(`Day ${this.currentDayNumber} not found in month data`);
       }
+    } else {
+      console.warn(`Month ${currentMonthPadded} not found for city ${selectedCity}`);
     }
+  }
+
+  selectCity(city: string): void {
+    this.currentCity = city;
+    // Сохраняем выбранный город в localStorage
+    localStorage.setItem(this.CITY_STORAGE_KEY, city);
+    this.menuOpen = false;
+    this.loadCurrentMonthAndDayData(city);
+    // Force change detection to update child components
+    this.cdr.detectChanges();
   }
 }

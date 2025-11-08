@@ -13,6 +13,8 @@ export class MobileTableComponent implements OnInit {
   @Input() currentDayNumber: string = '';
   @Input() currentMonth: string = '';
   @Input() currentYear: string = '';
+  @Input() currentCity: string = 'Гертма';
+  showRemainingDays = false;
   
 
 
@@ -21,10 +23,14 @@ export class MobileTableComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  
+  toggleRemainingDays(): void {
+    this.showRemainingDays = !this.showRemainingDays;
+  }
+
   async shareApp(): Promise<void> {
+    const cityPrefix = this.currentCity === 'Гертма' ? 'с.' : 'г.';
     const shareData: ShareData = {
-      title: 'Рузнама с.Гертма',
+      title: `Рузнама ${cityPrefix}${this.currentCity}`,
       text: `Время молитв на сегодня: ${this.currentDayNumber} ${this.currentMonth} ${this.currentYear}`,
       url: window.location.href
     };
