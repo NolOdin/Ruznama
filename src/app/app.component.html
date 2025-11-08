@@ -1,4 +1,4 @@
-<div class="table-container" [ngClass]="currentBackgroundClass">
+<div class="table-container" [ngClass]="currentBackgroundClass" [ngStyle]="{'--bg-image': getBackgroundImage()}">
   <div class="table-wrapper">
     <!-- Mobile-only top bar and hamburger without Tailwind -->
     <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">

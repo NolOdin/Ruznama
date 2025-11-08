@@ -73,6 +73,37 @@ export class AppComponent {
     }
   }
 
+  getBackgroundImage(): string {
+    const isMobile = window.innerWidth <= 767;
+    
+    if (this.currentCity === 'Махачкала') {
+      if (isMobile) {
+        // Для мобильных устройств используем mkh_day или mkh_night в зависимости от времени
+        if (this.currentBackgroundClass === 'evening-bg' || this.currentBackgroundClass === 'night-bg') {
+          return 'url("/assets/mkh_night.png")';
+        } else {
+          return 'url("/assets/mkh_day.png")';
+        }
+      } else {
+        // Для десктопа можно использовать тот же mkh_day или создать отдельный файл
+        return 'url("/assets/mkh_day.png")';
+      }
+    } else {
+      // Для Гертмы используем существующие изображения
+      if (isMobile) {
+        if (this.currentBackgroundClass === 'morning-bg' || this.currentBackgroundClass === 'day-bg') {
+          return 'url("/assets/Gertma1-T.png")';
+        } else if (this.currentBackgroundClass === 'evening-bg') {
+          return 'url("/assets/Gertma1_evening-T.png")';
+        } else {
+          return 'url("/assets/Gertma1_night-T.png")';
+        }
+      } else {
+        return 'url("/assets/Gertma2.png")';
+      }
+    }
+  }
+
   private convertTimeToMinutes(timeStr: string): number {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;
@@ -138,6 +169,8 @@ export class AppComponent {
     localStorage.setItem(this.CITY_STORAGE_KEY, city);
     this.menuOpen = false;
     this.loadCurrentMonthAndDayData(city);
+    // Обновляем фон после загрузки данных
+    this.updateBackgroundClass();
     // Force change detection to update child components
     this.cdr.detectChanges();
   }
