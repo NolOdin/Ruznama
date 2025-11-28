@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HijriDateComponent } from '../hijri-date/hijri-date.component';
 
 @Component({
   selector: 'app-mobile-table',
-  imports: [CommonModule],
+  imports: [CommonModule, HijriDateComponent],
   templateUrl: './mobile-table.component.html',
   styleUrl: './mobile-table.component.scss'
 })

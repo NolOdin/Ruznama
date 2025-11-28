@@ -1,0 +1,26 @@
+.hijri-date {
+   
+  padding-top: 50px;
+  opacity: 0.5;
+  padding: 10;
+}
+
+.hijri-date-txt {
+    color: white;
+    font-family: 'CloudyFont', Helvetica, Arial, sans-serif;
+    
+}
+
+@font-face {
+    font-family: 'CloudyFont'; // Имя, которое будет использоваться в CSS
+    src: url('/assets/fonts/Cloudy-f.ttf') format('truetype'); // Путь к файлу
+    font-weight: 400; // Вес шрифта
+    font-style: normal; // Стиль шрифта
+  }
+  
+  @font-face {
+    font-family: 'CloudyFont';
+    src: url('/assets/fonts/Cloudy-f.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
