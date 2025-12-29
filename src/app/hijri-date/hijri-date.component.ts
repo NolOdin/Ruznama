@@ -19,7 +19,6 @@ export class HijriDateComponent {
     this.year = today.toLocaleDateString('en-u-ca-islamic-umalqura', { year: 'numeric', calendar: 'islamic-umalqura' });
     this.year = this.year.replace('AH', 'H.')
 
-    console.log(this.year)
     // Форматирование даты на арабском языке
     //   const hijriDateArabic = today.toLocaleDateString('ar-SA',  {
     //     weekday: 'long',
