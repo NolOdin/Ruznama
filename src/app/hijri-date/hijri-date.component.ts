@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HijriDateService } from '../services/hijri-date.service';
 
 @Component({
   selector: 'app-hijri-date',
@@ -8,32 +9,20 @@ import { Component } from '@angular/core';
 })
 export class HijriDateComponent {
 
-  day = ''
-  month = ''
-  year = ''
+  hijri: any = {};
+  hijriEn: any = {};
 
-  h_date() {
+  constructor(private hijriService: HijriDateService) {
+    
+  }
+
+  ngOnInit(): void {
     const today = new Date();
-    this.day = today.toLocaleDateString('en-u-ca-islamic-umalqura', { day: 'numeric', calendar: 'islamic-umalqura' });
-    this.month = today.toLocaleDateString('en-u-ca-islamic-umalqura', { month: 'long', calendar: 'islamic-umalqura' });
-    this.year = today.toLocaleDateString('en-u-ca-islamic-umalqura', { year: 'numeric', calendar: 'islamic-umalqura' });
-    this.year = this.year.replace('AH', 'H.')
 
-    // Форматирование даты на арабском языке
-    //   const hijriDateArabic = today.toLocaleDateString('ar-SA',  {
-    //     weekday: 'long',
-    //     year: 'numeric',
-    //     month: 'long',
-    //     day: 'numeric',
-    //     calendar: 'islamic-umalqura' // Указываем исламский календарь Умм аль-Кура
-    // });
-    // this.ardate = hijriDateArabic
-    // Пример вывода: الجمعة، 7 جمادى الآخرة 1447 هـ
-
+    this.hijri = this.hijriService.getHijriDateParts(today, 'ar');
+    this.hijriEn = this.hijriService.getHijriDateParts(today, 'en')
+    
   }
 
-  constructor() {
-    this.h_date();
-  }
-
+  
 }
