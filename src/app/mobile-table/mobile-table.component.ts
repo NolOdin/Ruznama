@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HijriDateComponent } from '../hijri-date/hijri-date.component';
+import { UiButtonComponent } from '../ui/button/ui-button.component';
+import { UiCardComponent } from '../ui/card/ui-card.component';
 
 @Component({
   selector: 'app-mobile-table',
-  imports: [CommonModule, HijriDateComponent],
+  standalone: true,
+  imports: [CommonModule, UiButtonComponent, UiCardComponent],
   templateUrl: './mobile-table.component.html',
   styleUrl: './mobile-table.component.scss'
 })

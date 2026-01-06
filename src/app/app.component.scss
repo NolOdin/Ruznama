@@ -230,27 +230,54 @@
     padding: 8px 12px;
   }
 
-  .mobile-menu-item {
+  app-ui-button.mobile-menu-item {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 12px 16px;
     text-align: left;
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 400 !important;
     transition: background 100ms ease-in-out;
+    color: #111827 !important;
   }
-  .mobile-menu-item:hover { background: #f9fafb; }
+  
+  app-ui-button.mobile-menu-item::before,
+  app-ui-button.mobile-menu-item::after {
+    display: none !important;
+  }
+  
+  app-ui-button.mobile-menu-item:hover { 
+    background: #f9fafb !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  app-ui-button.mobile-menu-item.active {
+    background: rgba(249, 250, 251, 0.5) !important;
+    border: none !important;
+  }
+  
+  app-ui-button.mobile-menu-item.ui-button-ghost {
+    border: none !important;
+    background: transparent !important;
+  }
 
   .choice-pill {
     width: 10px;
     height: 10px;
     background: #22c55e; /* green-500 */
-    border-radius: 50%;
+    border-radius: 999px;
     display: inline-block;
     flex-shrink: 0;
+    margin-left: 8px;
+    //border: 2px solid #ffffff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
   }
 }

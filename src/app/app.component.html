@@ -10,13 +10,20 @@
         </svg>
         <span>{{ currentCity }}</span>
       </div>
-      <button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen" aria-label="Открыть меню">
+      <app-ui-button
+        class="hamburger-btn"
+        [class.open]="menuOpen"
+        (click)="menuOpen = !menuOpen"
+        aria-label="Открыть меню"
+        variant="ghost"
+        size="sm"
+      >
         <span class="hamburger-icon" aria-hidden="true">
           <span class="bar"></span>
           <span class="bar"></span>
           <span class="bar"></span>
         </span>
-      </button>
+      </app-ui-button>
     </div>
 
     <!-- Mobile menu panel + backdrop -->
@@ -24,14 +31,24 @@
       <div class="mobile-menu-backdrop" (click)="menuOpen = false"></div>
       <div class="mobile-menu-panel">
         <div class="mobile-menu-label">Город</div>
-        <button class="mobile-menu-item" (click)="selectCity('Гертма')" [class.active]="currentCity === 'Гертма'">
+        <app-ui-button
+          class="mobile-menu-item"
+          (click)="selectCity('Гертма')"
+          [class.active]="currentCity === 'Гертма'"
+          [fullWidth]="true"
+        >
           <span>Гертма</span>
           <span class="choice-pill" *ngIf="currentCity === 'Гертма'"></span>
-        </button>
-        <button class="mobile-menu-item" (click)="selectCity('Махачкала')" [class.active]="currentCity === 'Махачкала'">
+        </app-ui-button>
+        <app-ui-button
+          class="mobile-menu-item"
+          (click)="selectCity('Махачкала')"
+          [class.active]="currentCity === 'Махачкала'"
+          [fullWidth]="true"
+        >
           <span>Махачкала</span>
           <span class="choice-pill" *ngIf="currentCity === 'Махачкала'"></span>
-        </button>
+        </app-ui-button>
       </div>
     </div>
 

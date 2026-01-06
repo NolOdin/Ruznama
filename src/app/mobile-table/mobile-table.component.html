@@ -1,11 +1,17 @@
 <div class="table-content">
   <!-- <app-hijri-date></app-hijri-date> -->
-    <div class="intro-header-card-mobile">
+    <div class="intro-header-card-mobile" padding="lg">
       <h1>Рузнама {{ currentCity === 'Гертма' ? 'с.' : 'г.' }}{{ currentCity }}</h1>
     </div>
     <!-- Кнопки действий для мобильных устройств -->
     <div class="mobile-action-buttons">
-      <button class="mobile-action-btn share-btn" (click)="shareApp()" aria-label="Поделиться">
+      <app-ui-button
+        class="mobile-action-btn share-btn"
+        (click)="shareApp()"
+        aria-label="Поделиться"
+        variant="ghost"
+        size="md"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="18" cy="5" r="3"></circle>
           <circle cx="6" cy="12" r="3"></circle>
@@ -14,7 +20,7 @@
           <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         </svg>
         <span>Поделиться</span>
-      </button>
+      </app-ui-button>
     </div>
     
       <!-- Таблица времени молитв -->
@@ -62,16 +68,23 @@
       </div>
     </div>
     <div class="mobile-table-cards">
-      <button class="remaining-days-toggle" (click)="toggleRemainingDays()" [class.open]="showRemainingDays" aria-label="Показать/скрыть оставшиеся дни">
-        <span class="remaining-days-text">Оставшиеся дни:</span>
+      <app-ui-button
+        class="remaining-days-toggle"
+        (click)="toggleRemainingDays()"
+        [class.open]="showRemainingDays"
+        aria-label="Показать/скрыть оставшиеся дни"
+        variant="ghost"
+        [fullWidth]="true"
+      >
+        <span class="remaining-days-text">Оставшиеся дни</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
-      </button>
+      </app-ui-button>
       @if (showRemainingDays && currentMonthData) {
         @for (day of currentMonthData.days; track day.day) {
           @if (day.day > currentDayNumber) {
-            <div class="mobile-day-card">
+            <app-ui-card class="mobile-day-card" padding="md">
               <h4 class="date-header">{{ day.day }} число</h4>
               <div class="table-scroll">
                 <table class="mobile-table">
@@ -109,7 +122,7 @@
                   </tbody>
                 </table>
               </div>
-            </div>
+            </app-ui-card>
           }
         }
       } @else {

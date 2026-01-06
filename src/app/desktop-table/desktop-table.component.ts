@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { UiCardComponent } from '../ui/card/ui-card.component';
 
 @Component({
   selector: 'app-desktop-table',
+  standalone: true,
   imports: [],
   templateUrl: './desktop-table.component.html',
   styleUrl: './desktop-table.component.scss'
