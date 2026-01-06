@@ -1,5 +1,6 @@
 // Mobile table styles copied from app.component.scss and scoped to mobile component
 
+// Стили для карточки заголовка - только специфичные, базовые стили из ui-card
 .intro-header-card-mobile {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
@@ -9,7 +10,7 @@
   padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
-  margin-top: 500px;
+  margin-top: 310px;
 
   h1 {
     color: rgba(255, 255, 255, 0.9);
@@ -20,6 +21,8 @@
   }
 }
 
+
+
 .mobile-action-buttons {
   display: flex;
   flex-direction: row;
@@ -28,21 +31,20 @@
   justify-content: center;
 }
 
-.mobile-action-btn {
-  display: flex;
+app-ui-button.mobile-action-btn {
+  display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.25rem;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.875rem 1.25rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 14px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1) !important;
   flex: 1;
   max-width: 200px;
 
@@ -59,23 +61,13 @@
     white-space: nowrap;
   }
 
-  &.add-widget-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.9);
-
-    &:hover, &:active {
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-    }
-  }
-
   &.share-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
 
     &:hover, &:active {
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15) !important;
     }
   }
 }
@@ -262,28 +254,29 @@
   margin-bottom: 2rem;
 }
 
-.remaining-days-toggle {
-  background: rgba(255, 255, 255, 0.2);
+app-ui-button.remaining-days-toggle {
+  background: rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 12px 16px;
-  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   cursor: pointer;
-  color: #ffffff;
+  color: #ffffff !important;
   transition: background 200ms ease;
   margin-bottom: 1rem;
-  width: 100%;
+  //width: 100%;
+  box-shadow: none !important;
 }
 
-.remaining-days-toggle:hover {
-  background: rgba(255, 255, 255, 0.3);
+app-ui-button.remaining-days-toggle:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
 }
 
-.remaining-days-text {
+app-ui-button.remaining-days-toggle .remaining-days-text {
   color: #ffffff;
   font-size: 25px;
   font-weight: 600;
@@ -291,55 +284,56 @@
   text-align: left;
 }
 
-.remaining-days-toggle svg {
+app-ui-button.remaining-days-toggle svg {
   transition: transform 200ms ease;
   flex-shrink: 0;
 }
 
-.remaining-days-toggle.open svg {
+app-ui-button.remaining-days-toggle.open svg {
   transform: rotate(180deg);
 }
 
-.mobile-day-card {
+app-ui-card.mobile-day-card {
   backdrop-filter: blur(20px);
   border-radius: 14px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 1rem 0.7rem 0.7rem 0.7rem;
   position: relative;
+  display: block;
+}
 
-  .date-header {
-    color: #6699CC;
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 0.8rem 1.2rem;
-    border-radius: 10px 10px 0 0;
-    margin: -1rem -0.7rem 0.7rem -0.7rem;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+app-ui-card.mobile-day-card .date-header {
+  color: #6699CC;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px 10px 0 0;
+  margin: -1rem -0.7rem 0.7rem -0.7rem;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .today-text {
-      color: tomato;
-      font-weight: 700;
-      font-size: 1.6rem;
-    }
+app-ui-card.mobile-day-card .date-header .today-text {
+  color: tomato;
+  font-weight: 700;
+  font-size: 1.6rem;
+}
 
-    .current-day-number-text {
-      color: yellow;
-      font-weight: 700;
-      font-size: 1.6rem;
-      margin-left: 0.5rem;
-    }
+app-ui-card.mobile-day-card .date-header .current-day-number-text {
+  color: yellow;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-left: 0.5rem;
+}
 
-    .month-year-text {
-      color: #777;
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
-  }
+app-ui-card.mobile-day-card .date-header .month-year-text {
+  color: #777;
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 
 

@@ -3,14 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as gertmaData from '../datas/getrma_datas.json';
 import * as mkhData from '../datas/mkh_datas.json';
-import { DesktopTableComponent } from "./desktop-table/desktop-table.component";
-import { MobileTableComponent } from "./mobile-table/mobile-table.component";
+import { DesktopTableComponent } from './desktop-table/desktop-table.component';
+import { MobileTableComponent } from './mobile-table/mobile-table.component';
+import { UiButtonComponent } from './ui/button/ui-button.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent ],
+  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

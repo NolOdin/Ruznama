@@ -1,17 +1,18 @@
 // Desktop table styles copied from app.component.scss and scoped to desktop component
 
 .table-content {
-  .intro-header-card {
+  // Стили для карточки заголовка - только специфичные, базовые стили из ui-card
+  div.intro-header-card {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(15px);
     border-radius: 14px;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     margin-top: 500px;
-
+  
     h1 {
       color: rgba(255, 255, 255, 0.9);
       font-size: 2.8rem;
@@ -19,6 +20,14 @@
       margin: 0;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
+  }
+
+  app-ui-card.intro-header-card h1 {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .actual-table-container {

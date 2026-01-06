@@ -1,0 +1,26 @@
+.ui-card-base {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.26);
+}
+
+.ui-card-flat {
+  box-shadow: none;
+}
+
+.ui-card-padding-none {
+  padding: 0;
+}
+
+.ui-card-padding-sm {
+  padding: 0.75rem 1rem;
+}
+
+.ui-card-padding-lg {
+  padding: 1.5rem 2rem;
+}
+
+
