@@ -24,12 +24,15 @@ export class HijriDateService {
     if (this.isIntlHijriSupportedCache !== null) return this.isIntlHijriSupportedCache;
 
     try {
-      const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { year: 'numeric' });
-      const parts = formatter.formatToParts(new Date());
-      const yearPart = parts.find(p => p.type === 'year');
-      if (!yearPart) throw new Error();
-      const year = parseInt(yearPart.value.replace(/[\u0660-\u0669]/g, d => '0123456789'[d.charCodeAt(0) - 0x0660]));
-      this.isIntlHijriSupportedCache = year > 1300 && year < 1600;
+      const testDate = new Date(2026, 0, 6); // 6 января 2026 → должно быть Rajab
+      const formatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+        month: 'long'
+      });
+      const monthName = formatter.format(testDate);
+
+      // Проверяем, содержит ли название месяца что-то характерное для хиджры (Rajab, Muharram и т.д.)
+      const hijriMonthPattern = /(Muharram|Safar|Rabi|Jumada|Rajab|Sha|Ramadan|Shawwal|Dhu|Dhul)/i;
+      this.isIntlHijriSupportedCache = hijriMonthPattern.test(monthName);
     } catch {
       this.isIntlHijriSupportedCache = false;
     }
