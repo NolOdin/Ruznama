@@ -80,6 +80,24 @@
   /* Table content styles moved into child components */
 }
 
+/* Тестовые кнопки */
+.test-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .test-buttons-container {
+    margin: 1.5rem 0;
+    gap: 0.75rem;
+  }
+}
+
 /* Table-specific styles moved into child components */
 
 @media screen and (max-width: 767px) {

@@ -1,7 +1,8 @@
 <div class="table-container" [ngClass]="currentBackgroundClass" [ngStyle]="{'--bg-image': getBackgroundImage()}">
   <div class="table-wrapper">
     <!-- Mobile-only top bar and hamburger without Tailwind -->
-    <div class="mobile-topbar" [style.opacity]="mobileTopbarOpacity">
+    <div class="mobile-topbar" *ngIf="!modalOpen && !scrollWheelOpen && !cloudModalOpen && !libraryDetailModalOpen"
+      [style.opacity]="mobileTopbarOpacity">
       <div class="mobile-location">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -10,14 +11,8 @@
         </svg>
         <span>{{ currentCity }}</span>
       </div>
-      <app-ui-button
-        class="hamburger-btn"
-        [class.open]="menuOpen"
-        (click)="menuOpen = !menuOpen"
-        aria-label="Открыть меню"
-        variant="ghost"
-        size="sm"
-      >
+      <app-ui-button class="hamburger-btn" [class.open]="menuOpen" (click)="menuOpen = !menuOpen"
+        aria-label="Открыть меню" variant="ghost" size="sm">
         <span class="hamburger-icon" aria-hidden="true">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -27,30 +22,25 @@
     </div>
 
     <!-- Mobile menu panel + backdrop -->
-    <div *ngIf="menuOpen" class="mobile-menu-root">
+    <div *ngIf="menuOpen && !modalOpen && !scrollWheelOpen && !cloudModalOpen && !libraryDetailModalOpen"
+      class="mobile-menu-root">
       <div class="mobile-menu-backdrop" (click)="menuOpen = false"></div>
       <div class="mobile-menu-panel">
         <div class="mobile-menu-label">Город</div>
-        <app-ui-button
-          class="mobile-menu-item"
-          (click)="selectCity('Гертма')"
-          [class.active]="currentCity === 'Гертма'"
-          [fullWidth]="true"
-        >
+        <app-ui-button class="mobile-menu-item" (click)="selectCity('Гертма')" [class.active]="currentCity === 'Гертма'"
+          [fullWidth]="true">
           <span>Гертма</span>
           <span class="choice-pill" *ngIf="currentCity === 'Гертма'"></span>
         </app-ui-button>
-        <app-ui-button
-          class="mobile-menu-item"
-          (click)="selectCity('Махачкала')"
-          [class.active]="currentCity === 'Махачкала'"
-          [fullWidth]="true"
-        >
+        <app-ui-button class="mobile-menu-item" (click)="selectCity('Махачкала')"
+          [class.active]="currentCity === 'Махачкала'" [fullWidth]="true">
           <span>Махачкала</span>
           <span class="choice-pill" *ngIf="currentCity === 'Махачкала'"></span>
         </app-ui-button>
       </div>
     </div>
+
+
 
     <!-- Desktop table -->
     <app-desktop-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps"
@@ -59,6 +49,39 @@
     <!-- Mobile tables -->
     <app-mobile-table [currentDayNumber]="currentDayNumber" [currentDayTimestamps]="currentDayTimestamps"
       [currentMonth]="currentMonth" [currentYear]="currentYear" [currentMonthData]="currentMonthData"
-      [currentCity]="currentCity"></app-mobile-table>
+      [currentCity]="currentCity" (cloudClicked)="openCloudModal()"></app-mobile-table>
+
+
+
+    <!-- Cloud Modal (List of Library items) -->
+    <app-ui-modal [isOpen]="cloudModalOpen" [title]="'Дополнительно'" [size]="'sm'" [closeOnBackdropClick]="true"
+      [closeOnEscape]="true" [scrollable]="false" (close)="closeCloudModal()">
+      <div style="padding: 1rem 0;">
+        <div style="height: 350px;">
+          <app-ui-scroll-wheel [items]="libraryScrollItems"
+            (itemSelected)="onLibrarySelected($event)"></app-ui-scroll-wheel>
+        </div>
+        <div style="margin-top: 1.5rem; text-align: center;">
+          <app-ui-button (click)="closeCloudModal()" variant="ghost" size="md">
+            Закрыть
+          </app-ui-button>
+        </div>
+      </div>
+    </app-ui-modal>
+
+    <!-- Library Detail Modal -->
+    <app-ui-modal [isOpen]="libraryDetailModalOpen" [title]="selectedLibraryItem?.title || ''" [size]="'sm'"
+      [closeOnBackdropClick]="true" [closeOnEscape]="true" (close)="closeLibraryDetailModal()">
+      <div style="padding: 1rem 0;">
+        <div style="color: rgba(255, 255, 255, 0.9); line-height: 1.6;" [innerHTML]="selectedLibraryItem?.content">
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+          <app-ui-button (click)="closeLibraryDetailModal()" variant="ghost" size="md">
+            Назад
+          </app-ui-button>
+        </div>
+      </div>
+    </app-ui-modal>
 
     <router-outlet />

@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// Variables (optional, for easy theme/style changes)
+$list-wheel-bg: #08080a;
+$list-wheel-color: #fafdff;
+$list-wheel-border: #8c8da1;
+$list-wheel-item-bg: #242628;
+$list-wheel-scroll-thumb: #6c6d81cc;
+$list-wheel-scroll-thumb-hover: #6c6d81;
+
+.listWheel {
+  max-width: 800px;
+  height: 100%;
+  overflow-y: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  //background: $list-wheel-bg;
+  color: $list-wheel-color;
+
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scroll-snap-type: y mandatory;
+}
+
+.listWheelItemContainer {
+  height: fit-content;
+  flex-shrink: 0;
+  perspective: 500px;
+  transform-style: preserve-3d;
+  scroll-snap-align: center;
+}
+
+.listWheelItem {
+  width: 100%;
+  height: 100px;
+  border-radius: 6px;
+  border: 1px solid $list-wheel-border;
+  background-color: $list-wheel-item-bg;
+  color: $list-wheel-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top;
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+#listWheelLoader {
+  border: none;
+  background: transparent;
+  cursor: not-allowed;
+  color: $list-wheel-border;
+}
+

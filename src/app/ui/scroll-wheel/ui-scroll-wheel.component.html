@@ -1,0 +1,5 @@
+<ul class="listWheel" #listWheel (scroll)="onScroll()">
+  <li class="listWheelItemContainer" *ngFor="let item of displayItems" (click)="itemSelected.emit(item)">
+    <div class="listWheelItem">{{ item }}</div>
+  </li>
+</ul>

@@ -1,37 +1,84 @@
 <div class="table-content">
-  <app-hijri-date></app-hijri-date>
-    <div class="intro-header-card-mobile" padding="lg">
-      <h1>Рузнама {{ currentCity === 'Гертма' ? 'с.' : 'г.' }}{{ currentCity }}</h1>
+  <app-hijri-date (cloudClicked)="cloudClicked.emit()"></app-hijri-date>
+  <div class="intro-header-card-mobile" padding="lg">
+    <h1>Рузнама {{ currentCity === 'Гертма' ? 'с.' : 'г.' }}{{ currentCity }}</h1>
+  </div>
+  <!-- Кнопки действий для мобильных устройств -->
+  <div class="mobile-action-buttons">
+    <app-ui-button class="mobile-action-btn share-btn" (click)="shareApp()" aria-label="Поделиться" variant="ghost"
+      size="md">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span>Поделиться</span>
+    </app-ui-button>
+  </div>
+
+  <!-- Таблица времени молитв -->
+  <div class="actual-table-container">
+    <h3 class="date-header">
+      <span class="today-text">Сегодня:</span>
+      <span class="current-day-number-text">{{ currentDayNumber }} {{ currentMonth }}</span>
+      <span class="month-year-text">{{ currentYear }} г.</span>
+    </h3>
+    <div class="table-scroll">
+      <table class="actual-table">
+        <thead>
+          <tr>
+            <th>Время</th>
+            <th>Значение</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Фаджр</td>
+            <td>{{ currentDayTimestamps[0] }}</td>
+          </tr>
+          <tr>
+            <td>Восход</td>
+            <td>{{ currentDayTimestamps[1] }}</td>
+          </tr>
+          <tr>
+            <td>Обеденный</td>
+            <td>{{ currentDayTimestamps[2] }}</td>
+          </tr>
+          <tr>
+            <td>Послеобеденный</td>
+            <td>{{ currentDayTimestamps[3] }}</td>
+          </tr>
+          <tr>
+            <td>Вечерний</td>
+            <td>{{ currentDayTimestamps[4] }}{{ currentCity === 'Гертма' ? ' +3 мин.' : '' }}</td>
+          </tr>
+          <tr>
+            <td>Ночной</td>
+            <td>{{ currentDayTimestamps[5] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- Кнопки действий для мобильных устройств -->
-    <div class="mobile-action-buttons">
-      <app-ui-button
-        class="mobile-action-btn share-btn"
-        (click)="shareApp()"
-        aria-label="Поделиться"
-        variant="ghost"
-        size="md"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-        </svg>
-        <span>Поделиться</span>
-      </app-ui-button>
-    </div>
-    
-      <!-- Таблица времени молитв -->
-      <div class="actual-table-container">
-      <h3 class="date-header">
-        <span class="today-text">Сегодня:</span>
-        <span class="current-day-number-text">{{ currentDayNumber }} {{ currentMonth }}</span>
-        <span class="month-year-text">{{ currentYear }} г.</span>
-      </h3>
+  </div>
+  <div class="mobile-table-cards">
+    <app-ui-button class="remaining-days-toggle" (click)="toggleRemainingDays()" [class.open]="showRemainingDays"
+      aria-label="Показать/скрыть оставшиеся дни" variant="ghost" [fullWidth]="true">
+      <span class="remaining-days-text">Оставшиеся дни</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </app-ui-button>
+    @if (showRemainingDays && currentMonthData) {
+    @for (day of currentMonthData.days; track day.day) {
+    @if (day.day > currentDayNumber) {
+    <app-ui-card class="mobile-day-card" padding="md">
+      <h4 class="date-header">{{ day.day }} число</h4>
       <div class="table-scroll">
-        <table class="actual-table">
+        <table class="mobile-table">
           <thead>
             <tr>
               <th>Время</th>
@@ -41,92 +88,36 @@
           <tbody>
             <tr>
               <td>Фаджр</td>
-              <td>{{ currentDayTimestamps[0] }}</td>
+              <td>{{ day.timestamps[0] }}</td>
             </tr>
             <tr>
               <td>Восход</td>
-              <td>{{ currentDayTimestamps[1] }}</td>
+              <td>{{ day.timestamps[1] }}</td>
             </tr>
             <tr>
               <td>Обеденный</td>
-              <td>{{ currentDayTimestamps[2] }}</td>
+              <td>{{ day.timestamps[2] }}</td>
             </tr>
             <tr>
               <td>Послеобеденный</td>
-              <td>{{ currentDayTimestamps[3] }}</td>
+              <td>{{ day.timestamps[3] }}</td>
             </tr>
             <tr>
               <td>Вечерний</td>
-              <td>{{ currentDayTimestamps[4] }}{{ currentCity === 'Гертма' ? ' +3 мин.' : '' }}</td>
+              <td>{{ day.timestamps[4] }}</td>
             </tr>
             <tr>
               <td>Ночной</td>
-              <td>{{ currentDayTimestamps[5] }}</td>
+              <td>{{ day.timestamps[5] }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-    <div class="mobile-table-cards">
-      <app-ui-button
-        class="remaining-days-toggle"
-        (click)="toggleRemainingDays()"
-        [class.open]="showRemainingDays"
-        aria-label="Показать/скрыть оставшиеся дни"
-        variant="ghost"
-        [fullWidth]="true"
-      >
-        <span class="remaining-days-text">Оставшиеся дни</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </app-ui-button>
-      @if (showRemainingDays && currentMonthData) {
-        @for (day of currentMonthData.days; track day.day) {
-          @if (day.day > currentDayNumber) {
-            <app-ui-card class="mobile-day-card" padding="md">
-              <h4 class="date-header">{{ day.day }} число</h4>
-              <div class="table-scroll">
-                <table class="mobile-table">
-                  <thead>
-                    <tr>
-                      <th>Время</th>
-                      <th>Значение</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Фаджр</td>
-                      <td>{{ day.timestamps[0] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Восход</td>
-                      <td>{{ day.timestamps[1] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Обеденный</td>
-                      <td>{{ day.timestamps[2] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Послеобеденный</td>
-                      <td>{{ day.timestamps[3] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Вечерний</td>
-                      <td>{{ day.timestamps[4] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Ночной</td>
-                      <td>{{ day.timestamps[5] }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </app-ui-card>
-          }
-        }
-      } @else {
-        <!-- <div>Нет данных за текущий месяц.</div> -->
-      }
-    </div>
+    </app-ui-card>
+    }
+    }
+    } @else {
+    <!-- <div>Нет данных за текущий месяц.</div> -->
+    }
   </div>
+</div>
