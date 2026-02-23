@@ -1,26 +1,99 @@
 .hijri-date {
-   
+
   padding-top: 50px;
   opacity: 0.5;
   margin: 10px;
 }
 
+.hijri-day {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  border-radius: 12px;
+  color: #9dafcc;
+  font-size: 35px;
+  padding-bottom: 5px;
+  padding-right: 6px;
+}
+
 .hijri-date-txt {
-    color: white;
-    font-family: 'CloudyFont', Helvetica, Arial, sans-serif;
-    
+  color: white;
+  font-family: 'CloudyFont', Helvetica, Arial, sans-serif;
+  font-size: 27px;
+
+}
+
+.hijri-month {
+  color: white;
+  font-family: 'KuficFont', sans-serif;
+  font-size: 27px;
+  margin-left: 10px;
 }
 
 @font-face {
-    font-family: 'CloudyFont'; // Имя, которое будет использоваться в CSS
-    src: url('/assets/fonts/Cloudy-f.ttf') format('truetype'); // Путь к файлу
-    font-weight: 400; // Вес шрифта
-    font-style: normal; // Стиль шрифта
+  font-family: 'CloudyFont'; // Имя, которое будет использоваться в CSS
+  src: url('/assets/fonts/Cloudy-f.ttf') format('truetype'); // Путь к файлу
+  font-weight: 400; // Вес шрифта
+  font-style: normal; // Стиль шрифта
+}
+
+@font-face {
+  font-family: 'KuficFont';
+  src: url('/assets/fonts/Khebrat-Musamim.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CloudyFont';
+  src: url('/assets/fonts/Cloudy-f.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.cloud-btn {
+  background: none;
+  border: none;
+  color: white;
+  /* or match parent color */
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-left: 8px;
+  transition: background-color 0.2s, transform 0.2s;
+
+  // Animation settings
+  opacity: 0.8;
+  animation: cloud-glow-blink 3s infinite ease-in-out;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+    transform: scale(1.1);
+    animation: none; // Pause or stop animation on hover if desired, or keep it
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
   }
-  
-  @font-face {
-    font-family: 'CloudyFont';
-    src: url('/assets/fonts/Cloudy-f.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
+
+  &:active {
+    transform: scale(0.95);
   }
+}
+
+@keyframes cloud-glow-blink {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    transform: scale(1.05);
+  }
+}

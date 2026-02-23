@@ -1,4 +1,4 @@
-import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as gertmaData from '../datas/getrma_datas.json';
@@ -6,16 +6,19 @@ import * as mkhData from '../datas/mkh_datas.json';
 import { DesktopTableComponent } from './desktop-table/desktop-table.component';
 import { MobileTableComponent } from './mobile-table/mobile-table.component';
 import { UiButtonComponent } from './ui/button/ui-button.component';
+import { UiModalComponent } from './ui/modal/ui-modal.component';
+import { UiScrollWheelComponent } from './ui/scroll-wheel/ui-scroll-wheel.component';
+import { LibraryService, LibraryItem } from './services/library.service';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent],
+  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent, UiModalComponent, UiScrollWheelComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Ruznama';
   currentMonthData: any;
   currentDayTimestamps: string[] = [];
@@ -27,9 +30,34 @@ export class AppComponent {
   cities: string[] = ['Гертма', 'Махачкала'];
   menuOpen = false;
   mobileTopbarOpacity = 0.9;
+  modalOpen = false;
+  scrollWheelOpen = false;
+  scrollWheelItems: string[] = [
+    'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница',
+    'Суббота', 'Воскресенье', 'Январь', 'Февраль', 'Март',
+    'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+    'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  selectedScrollIndex = 0;
+
+  selectedItem: string | null = null;
+  itemDetailsModalOpen = false;
+
+  // Cloud modal state
+  cloudModalOpen = false;
+  libraryDetailModalOpen = false;
+  selectedLibraryItem: LibraryItem | null = null;
+  libraryItems: LibraryItem[] = [];
+
+  libraryScrollItems: string[] = [];
+
   private readonly CITY_STORAGE_KEY = 'ruznama_selected_city';
 
-  constructor(private cdr: ChangeDetectorRef) {
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private libraryService: LibraryService
+  ) {
     // Восстанавливаем сохраненный город из localStorage
     const savedCity = localStorage.getItem(this.CITY_STORAGE_KEY);
     if (savedCity && this.cities.includes(savedCity)) {
@@ -37,6 +65,14 @@ export class AppComponent {
     }
     this.loadCurrentMonthAndDayData();
     this.updateBackgroundClass();
+  }
+
+  ngOnInit() {
+    this.libraryService.loadLibrary().subscribe(items => {
+      this.libraryItems = items;
+      this.libraryScrollItems = items.map(item => item.title);
+      this.cdr.markForCheck();
+    });
   }
 
   @HostListener('window:scroll')
@@ -51,7 +87,7 @@ export class AppComponent {
   private updateBackgroundClass() {
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert to minutes
-    
+
     if (this.currentDayTimestamps.length >= 6) {
       const fajrTime = this.convertTimeToMinutes(this.currentDayTimestamps[0]);
       const sunriseTime = this.convertTimeToMinutes(this.currentDayTimestamps[1]);
@@ -77,7 +113,7 @@ export class AppComponent {
 
   getBackgroundImage(): string {
     const isMobile = window.innerWidth <= 767;
-    
+
     if (this.currentCity === 'Махачкала') {
       if (isMobile) {
         // Для мобильных устройств используем mkh_day или mkh_night в зависимости от времени
@@ -130,7 +166,7 @@ export class AppComponent {
 
     let yearData: any[] = [];
     let data: any = null;
-    
+
     if (selectedCity === 'Гертма') {
       //console.log('s sity Gertma')
       // Access JSON data - Angular wraps it in default property
@@ -142,17 +178,17 @@ export class AppComponent {
       data = (mkhData as any).default || mkhData;
       yearData = data.year || [];
       this.currentMonthData = yearData.find((month: any) => month.month === currentMonthPadded);
-      
+
     }
 
-    
+
     if (this.currentMonthData) {
       // Force new object reference to trigger change detection
-      this.currentMonthData = { 
-        ...this.currentMonthData, 
-        days: [...this.currentMonthData.days] 
+      this.currentMonthData = {
+        ...this.currentMonthData,
+        days: [...this.currentMonthData.days]
       };
-      
+
       const dayData = this.currentMonthData.days.find((day: any) => day.day === this.currentDayNumber);
       if (dayData) {
         this.currentDayTimestamps = [...dayData.timestamps]; // Create new array to trigger change detection
@@ -175,5 +211,72 @@ export class AppComponent {
     this.updateBackgroundClass();
     // Force change detection to update child components
     this.cdr.detectChanges();
+  }
+
+  openModal(): void {
+    this.modalOpen = true;
+    // Закрываем мобильное меню при открытии модального окна
+    this.menuOpen = false;
+  }
+
+  closeModal(): void {
+    this.modalOpen = false;
+  }
+
+  openScrollWheel(): void {
+    this.scrollWheelOpen = true;
+    this.menuOpen = false;
+  }
+
+  closeScrollWheel(): void {
+    this.scrollWheelOpen = false;
+  }
+
+  onScrollWheelSelected(index: number): void {
+    this.selectedScrollIndex = index;
+  }
+
+  onScrollWheelConfirm(index: number): void {
+    this.selectedScrollIndex = index;
+    this.closeScrollWheel();
+  }
+
+  onItemSelected(item: string): void {
+    this.selectedItem = item;
+    // Close the scroll wheel modal? Or keep it open? 
+    // Usually "open modal corresponding to item" might imply a drill-down.
+    // Let's keep the scroll wheel open if it's a "selection", but if it's "opening a modal", maybe close scroll wheel? 
+    // The user said "open modal corresponding to item", so let's stack them or close the previous one.
+    // Stacking modals is sometimes tricky with z-index, but our modal system seems to support it if z-index is handled.
+    // However, for simplicity and UX, let's just open the new one on top.
+    this.itemDetailsModalOpen = true;
+  }
+
+  closeItemDetailsModal(): void {
+    this.itemDetailsModalOpen = false;
+    this.selectedItem = null;
+  }
+
+  // Cloud modal methods
+  openCloudModal(): void {
+    this.cloudModalOpen = true;
+    this.menuOpen = false; // Close menu if open
+  }
+
+  closeCloudModal(): void {
+    this.cloudModalOpen = false;
+  }
+
+  onLibrarySelected(itemTitle: string): void {
+    const item = this.libraryItems.find(i => i.title === itemTitle);
+    if (item) {
+      this.selectedLibraryItem = item;
+      this.libraryDetailModalOpen = true;
+    }
+  }
+
+  closeLibraryDetailModal(): void {
+    this.libraryDetailModalOpen = false;
+    this.selectedLibraryItem = null;
   }
 }

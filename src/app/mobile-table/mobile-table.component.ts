@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UiButtonComponent } from '../ui/button/ui-button.component';
 import { UiCardComponent } from '../ui/card/ui-card.component';
@@ -18,14 +18,15 @@ export class MobileTableComponent implements OnInit {
   @Input() currentMonth: string = '';
   @Input() currentYear: string = '';
   @Input() currentCity: string = 'Гертма';
+  @Output() cloudClicked = new EventEmitter<void>();
   showRemainingDays = false;
-  
 
 
 
 
 
-  ngOnInit(): void {}
+
+  ngOnInit(): void { }
 
   toggleRemainingDays(): void {
     this.showRemainingDays = !this.showRemainingDays;
@@ -42,7 +43,7 @@ export class MobileTableComponent implements OnInit {
     try {
       // Проверяем поддержку Web Share API
       const nav = navigator as Navigator & { share?: (data: ShareData) => Promise<void>; canShare?: (data: ShareData) => boolean };
-      
+
       if (nav.share && nav.canShare && nav.canShare(shareData)) {
         await nav.share(shareData);
       } else {

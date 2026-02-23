@@ -1,6 +1,13 @@
 <div class="hijri-date">
-  <h1 class="hijri-date-txt"><a style="color: #9dafcc; font-size: 35px;">{{ hijriEn.day }}</a> {{ hijriEn.monthName }}<p>{{ hijriEn.year }}</p></h1>
+  <div class="hijri-date-txt">
+    <a class="hijri-day">{{ hijriEn.day }}</a>
+    <a class="hijri-month">{{ hijri.monthName }}</a>
+    <button class="cloud-btn" (click)="cloudClicked.emit()" aria-label="Открыть облако">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+      </svg>
+    </button>
+    <p>{{ hijriEn.year }}</p>
+  </div>
 </div>
-
-
-

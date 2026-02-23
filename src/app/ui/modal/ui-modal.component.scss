@@ -1,0 +1,181 @@
+.ui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+  pointer-events: none;
+}
+
+.ui-modal-overlay.ui-modal-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ui-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ui-modal-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  max-height: 90vh;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  transition: transform 200ms ease;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.ui-modal-overlay.ui-modal-open .ui-modal-container {
+  transform: scale(1);
+}
+
+// Размеры модального окна
+.ui-modal-size-sm {
+  width: 100%;
+  max-width: 400px;
+}
+
+.ui-modal-size-md {
+  width: 100%;
+  max-width: 600px;
+}
+
+.ui-modal-size-lg {
+  width: 100%;
+  max-width: 800px;
+}
+
+.ui-modal-size-xl {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.ui-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.ui-modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ui-modal-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+  transition: background-color 150ms ease, color 150ms ease;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ui-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 1);
+}
+
+.ui-modal-close-btn:active {
+  transform: scale(0.95);
+}
+
+.ui-modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-modal-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  color: rgba(255, 255, 255, 0.9);
+
+  &.scroll-hidden {
+    overflow-y: hidden;
+  }
+}
+
+// Если нет заголовка, убираем отступ сверху у контента
+.ui-modal-container:has(.ui-modal-header) .ui-modal-content {
+  padding-top: 1.5rem;
+}
+
+@font-face {
+  font-family: 'NaskhFont';
+  src: url('/assets/fonts/NotoNaskhArabic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+#arr_font_naskh {
+  font-family: "NaskhFont", sans-serif;
+  font-optical-sizing: auto;
+  //font-weight: <weight>;
+  font-style: normal;
+}
+
+// Для мобильных устройств
+@media (max-width: 640px) {
+  .ui-modal-container {
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+    margin-top: auto;
+    margin-bottom: 0;
+  }
+
+  .ui-modal-size-sm,
+  .ui-modal-size-md,
+  .ui-modal-size-lg,
+  .ui-modal-size-xl {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .ui-modal-header {
+    padding: 1rem;
+  }
+
+  .ui-modal-content {
+    padding: 1rem;
+  }
+}
