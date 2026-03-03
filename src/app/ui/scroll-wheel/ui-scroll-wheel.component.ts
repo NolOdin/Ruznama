@@ -26,7 +26,7 @@ export class UiScrollWheelComponent implements OnInit, OnChanges, AfterViewInit 
   ngOnInit() {
     this.updateDisplayItems();
   }
-
+  
   ngOnChanges() {
     this.updateDisplayItems();
   }
