@@ -57,11 +57,19 @@
     <app-ui-modal [isOpen]="cloudModalOpen" [title]="'Дополнительно'" [size]="'sm'" [closeOnBackdropClick]="true"
       [closeOnEscape]="true" [scrollable]="false" (close)="closeCloudModal()">
       <div style="padding: 1rem 0;">
-        <div style="height: 350px;">
+        <!-- iOS Spinner: shown while loading -->
+        <app-ui-spinner [visible]="libraryLoading"></app-ui-spinner>
+
+        <!-- Network Error: shown when load fails -->
+        <app-ui-network-error [visible]="libraryError && !libraryLoading" (retry)="retryLoadLibrary()"></app-ui-network-error>
+
+        <!-- Scroll Wheel: shown only when loaded successfully -->
+        <div style="height: 350px;" *ngIf="!libraryLoading && !libraryError">
           <app-ui-scroll-wheel [items]="libraryScrollItems"
             (itemSelected)="onLibrarySelected($event)"></app-ui-scroll-wheel>
         </div>
-        <div style="margin-top: 1.5rem; text-align: center;">
+
+        <div style="margin-top: 1.5rem; text-align: center;" *ngIf="!libraryLoading">
           <app-ui-button (click)="closeCloudModal()" variant="ghost" size="md">
             Закрыть
           </app-ui-button>

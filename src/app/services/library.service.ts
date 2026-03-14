@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, forkJoin, of, BehaviorSubject } from 'rxjs';
+import { map, catchError, finalize } from 'rxjs/operators';
 
 export interface LibraryItem {
     id: string;
@@ -18,12 +18,23 @@ export class LibraryService {
 
     private libraryItems: LibraryItem[] = [];
 
+    readonly loading$ = new BehaviorSubject<boolean>(false);
+    readonly error$ = new BehaviorSubject<boolean>(false);
+
     constructor(private http: HttpClient) { }
+
+    /** Call this to force a fresh reload (used by Retry). */
+    reset(): void {
+        this.libraryItems = [];
+    }
 
     loadLibrary(): Observable<LibraryItem[]> {
         if (this.libraryItems.length > 0) {
             return of(this.libraryItems);
         }
+
+        this.loading$.next(true);
+        this.error$.next(false);
 
         const mavaqit$ = this.http.get<any>('assets/library/azkars/azkar_mavaqit.json').pipe(
             map(data => ({
@@ -69,10 +80,17 @@ export class LibraryService {
 
         return forkJoin([mavaqit$, dua$, usulDin$]).pipe(
             map(results => {
-                // Filter out nulls and cast to LibraryItem[]
-                this.libraryItems = results.filter((item) => item !== null) as LibraryItem[];
+                const loaded = results.filter((item) => item !== null) as LibraryItem[];
+                if (loaded.length === 0) {
+                    // All requests failed — treat as network error
+                    this.error$.next(true);
+                } else {
+                    this.libraryItems = loaded;
+                    this.error$.next(false);
+                }
                 return this.libraryItems;
-            })
+            }),
+            finalize(() => this.loading$.next(false))
         );
     }
 
@@ -95,9 +113,8 @@ export class LibraryService {
     private formatDua(items: any[]): string {
         if (!Array.isArray(items)) return '';
         return items.map(item => {
-            let html = `<div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;"><ul style="padding-left: 20px;>`;
+            let html = `<div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;"><ul style="padding-left: 20px;">`;
             if (item.arabic) html += `<div style="font-size: 1.2em; text-align: right; margin-bottom: 10px;" id="arr_font_naskh"><li>${item.arabic}</div>`;
-            //if (item.transcription) html += `<div style="margin-bottom: 8px; font-style: italic;">${item.transcription}</div>`;
             if (item.translation) html += `<div>${item.translation}</div>`;
             if (item.source) html += `<div style="opacity: 0.7; font-size: 0.9em; margin-bottom: 5px;">${item.source}</div>`;
             html += `</ul></div>`;

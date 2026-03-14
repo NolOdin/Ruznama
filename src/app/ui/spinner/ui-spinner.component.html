@@ -1,0 +1,9 @@
+@if (visible) {
+  <div class="spinner-overlay">
+    <div class="ios-spinner">
+      @for (bar of bars; track $index) {
+        <div class="spinner-bar" [style.transform]="'rotate(' + ($index * 30) + 'deg)'" [style.animation-delay]="'-' + ((12 - $index) * 0.0833) + 's'"></div>
+      }
+    </div>
+  </div>
+}

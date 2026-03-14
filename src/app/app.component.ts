@@ -1,4 +1,4 @@
-import { Component, HostListener, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as gertmaData from '../datas/getrma_datas.json';
@@ -9,16 +9,19 @@ import { UiButtonComponent } from './ui/button/ui-button.component';
 import { UiModalComponent } from './ui/modal/ui-modal.component';
 import { UiScrollWheelComponent } from './ui/scroll-wheel/ui-scroll-wheel.component';
 import { LibraryService, LibraryItem } from './services/library.service';
+import { UiSpinnerComponent } from './ui/spinner/ui-spinner.component';
+import { UiNetworkErrorComponent } from './ui/network-error/ui-network-error.component';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent, UiModalComponent, UiScrollWheelComponent],
+  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent, UiModalComponent, UiScrollWheelComponent, UiSpinnerComponent, UiNetworkErrorComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Ruznama';
   currentMonthData: any;
   currentDayTimestamps: string[] = [];
@@ -48,8 +51,13 @@ export class AppComponent implements OnInit {
   libraryDetailModalOpen = false;
   selectedLibraryItem: LibraryItem | null = null;
   libraryItems: LibraryItem[] = [];
-
   libraryScrollItems: string[] = [];
+
+  // Loading / error state (wired from LibraryService)
+  libraryLoading = false;
+  libraryError = false;
+
+  private librarySubs = new Subscription();
 
   private readonly CITY_STORAGE_KEY = 'ruznama_selected_city';
 
@@ -68,11 +76,36 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.librarySubs.add(
+      this.libraryService.loading$.subscribe(v => {
+        this.libraryLoading = v;
+        this.cdr.markForCheck();
+      })
+    );
+    this.librarySubs.add(
+      this.libraryService.error$.subscribe(v => {
+        this.libraryError = v;
+        this.cdr.markForCheck();
+      })
+    );
+    this.triggerLibraryLoad();
+  }
+
+  ngOnDestroy() {
+    this.librarySubs.unsubscribe();
+  }
+
+  private triggerLibraryLoad(): void {
     this.libraryService.loadLibrary().subscribe(items => {
       this.libraryItems = items;
       this.libraryScrollItems = items.map(item => item.title);
       this.cdr.markForCheck();
     });
+  }
+
+  retryLoadLibrary(): void {
+    this.libraryService.reset();
+    this.triggerLibraryLoad();
   }
 
   @HostListener('window:scroll')
