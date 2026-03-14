@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.spinner-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+
+.ios-spinner {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.spinner-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  height: 12px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  transform-origin: center 22px;
+  animation: ios-spin-fade 1s linear infinite;
+}
+
+@keyframes ios-spin-fade {
+  0%   { opacity: 1; }
+  100% { opacity: 0.08; }
+}
