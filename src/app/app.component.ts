@@ -11,13 +11,14 @@ import { UiScrollWheelComponent } from './ui/scroll-wheel/ui-scroll-wheel.compon
 import { LibraryService, LibraryItem } from './services/library.service';
 import { UiSpinnerComponent } from './ui/spinner/ui-spinner.component';
 import { UiNetworkErrorComponent } from './ui/network-error/ui-network-error.component';
+import { PwaInstallComponent } from './ui/pwa-install/pwa-install.component';
 import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent, UiModalComponent, UiScrollWheelComponent, UiSpinnerComponent, UiNetworkErrorComponent],
+  imports: [CommonModule, RouterOutlet, DesktopTableComponent, MobileTableComponent, UiButtonComponent, UiModalComponent, UiScrollWheelComponent, UiSpinnerComponent, UiNetworkErrorComponent, PwaInstallComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -52,6 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedLibraryItem: LibraryItem | null = null;
   libraryItems: LibraryItem[] = [];
   libraryScrollItems: string[] = [];
+
+  pwaModalOpen = false;
 
   // Loading / error state (wired from LibraryService)
   libraryLoading = false;
